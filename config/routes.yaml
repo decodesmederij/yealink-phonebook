@@ -1,0 +1,59 @@
+index:
+  path: /
+  controller: App\Controller\DefaultController::indexAction
+
+homepage:
+  path: /
+  controller: App\Controller\DefaultController::indexAction
+
+source:
+  path: /source
+  controller: App\Controller\SourceController::indexAction
+
+source_new:
+  path: /source/new
+  controller: App\Controller\SourceController::newAction
+
+source_list:
+  path: /source/list
+  controller: App\Controller\SourceController::listAction
+
+source_upload:
+  path: /source/upload
+  controller: App\Controller\SourceController::uploadAction
+
+contact:
+  path: /contact/{name}
+  controller: App\Controller\ContactController::indexAction
+  requirements:
+    name: '[A-Za-z.0-9-_ ]+'
+
+contact_list:
+  path: /contact/{name}/list
+  controller: App\Controller\ContactController::listAction
+  requirements:
+    name: '[A-Za-z.0-9-_ ]+'
+
+contact_edit:
+  path: /contact/{name}/edit
+  controller: App\Controller\ContactController::editAction
+  requirements:
+    name: '[A-Za-z.0-9-_ ]+'
+
+contact_url:
+  path: /contact/{name}/url
+  controller: App\Controller\ContactController::urlAction
+  requirements:
+    name: '[A-Za-z.0-9-_ ]+'
+
+contact_backup:
+  path: /contact/{name}/backup
+  controller: App\Controller\ContactController::backupAction
+  requirements:
+    name: '[A-Za-z.0-9-_ ]+'
+
+contact_save:
+  path: /contact/{name}/save
+  controller: App\Controller\ContactController::saveAction
+  requirements:
+    name: '[A-Za-z.0-9-_ ]+'

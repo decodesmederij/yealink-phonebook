@@ -8,13 +8,7 @@ Check out the [post about the release](http://labs.octivi.com/yealink-phone-book
 Installation
 ---------------------------------------------
 
-### Using a release file (prefered way)
-
-1. Download the latest release of YealinkPhoneBookManager
-2. Unpack archive file under your web directory
-3. Modify .htaccess to allow access to your phone book manager - as described in a .htaccess password protection
-
-### Using Composer (for development)
+### Using Composer
 
 Under your host directory clone this Git repository.
 
@@ -23,22 +17,7 @@ Under your host directory clone this Git repository.
     curl -sS https://getcomposer.org/installer | php
     php composer.phar install
 
-2. Copy `app/properties.json.dist` to `app/properties.json`
-3. In `app/properties.json` you can set default path and file name of your phone book
-4. Set the server's document root to the web/ folder
-
-Configuration
----------------------------------------------
-
-Location of the configuration file depends on the way of the installation:
-
-* From a release file - `index.php`
-* Composer - `app/properties.json`
-
-In that files you will find configuration properties:
-
-* `directory` - default directory of the phone book XML files
-* `defaultFileName` - name of the default file, which manager will use as a primary phone book
+2. Set the server's document root to the public/ folder
 
 
 .htaccess password protection
