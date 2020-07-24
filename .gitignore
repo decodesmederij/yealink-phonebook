@@ -17,4 +17,5 @@ public/index.php
 src/Kernel.php
 public/pb
 !public/pb/.gitkeep
-
+src/Controller/.gitignore
+templates/base.html.twig
