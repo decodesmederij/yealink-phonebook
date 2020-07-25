@@ -28,6 +28,12 @@ source_delete:
   requirements:
     name: '[A-Za-z.0-9-_ ]+'
 
+source_export_csv:
+  path: /source/{name}/csv/export
+  controller: App\Controller\SourceController::exportCSVAction
+  requirements:
+    name: '[A-Za-z.0-9-_ ]+'
+
 contact:
   path: /contact/{name}
   controller: App\Controller\ContactController::indexAction

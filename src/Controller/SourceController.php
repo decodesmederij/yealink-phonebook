@@ -10,9 +10,11 @@ namespace App\Controller;
 
 use App\Form\NewFileForm;
 use App\Form\UploadFileForm;
+use App\Service\XMLFileService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SourceController extends AbstractController
 {
@@ -36,18 +38,62 @@ class SourceController extends AbstractController
         $uploadFileForm = $createUploadFileForm->createForm();
 
         if ($request->getMethod() === 'POST') {
-            $uploadFileForm->bind($request);
+            $uploadFileForm->handleRequest();
 
             if ($uploadFileForm->isValid()) {
                 $file = $request->files->get($uploadFileForm->getName());
                 $path = "pb";
                 $filename = $file['fileToUpload']->getClientOriginalName();
+                $extension = substr($filename, -4);
 
-                $file['fileToUpload']->move($path, $filename);
+                if($extension == ".xml") {
+                    $file['fileToUpload']->move($path, $filename);
 
-                return $this->redirect(
-                    $this->generateUrl('contact', array('name' => $filename))
-                );
+                    return $this->redirect(
+                        $this->generateUrl('contact', array('name' => $filename))
+                    );
+                } elseif($extension == ".csv") {
+                    $new_filename = substr($filename, 0, -4) . '.xml';
+
+                    $file['fileToUpload']->move($path, $filename);
+
+                    $file_content = file($path . '/' . $filename);
+
+                    $csv = array_map(
+                        'str_getcsv',
+                        $file_content,
+                        array_fill(0, count($file_content),";")
+                    );
+
+                    $data = array();
+                    $data['phoneRecords'] = array();
+
+                    foreach($csv as $line) {
+                        $record = array();
+                        $record['recordName'] = $line[0];
+                        $record['phoneNumbers'] = array();
+
+                        for($i=1; $i < count($line); $i++) {
+                            $record['phoneNumbers'][] = array("phoneNumber" => $line[$i]);
+                        }
+
+                        $data['phoneRecords'][] = $record;
+                    }
+
+                    $XMLPattern = new XMLFileService($new_filename, "pb");
+                    $XMLToSave = $XMLPattern->generateProperXML($data);
+                    $XMLPattern->saveFile($XMLToSave);
+
+                    unlink($path . '/' . $filename);
+
+                    return $this->redirect(
+                        $this->generateUrl('source')
+                    );
+                } else {
+                    return $this->redirect(
+                        $this->generateUrl('source')
+                    );
+                }
             }
         }
 
@@ -104,6 +150,39 @@ class SourceController extends AbstractController
 
         return $this->redirect(
             $this->generateUrl('source')
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param String $name
+     * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws
+     */
+    public function exportCSVAction(Request $request, $name) {
+        $XMLService = new XMLFileService($name, 'pb');
+        $phonebook = $XMLService->loadFile();
+
+        $response = "";
+
+        foreach($phonebook as $entry) {
+            $response .= '"' . $entry->Name . '";';
+
+            foreach($entry->Telephone as $number) {
+                $response .= '"' . $number . '";';
+            }
+
+            $response = substr($response, 0, -1);
+            $response .= "\n";
+        }
+
+        return new Response(
+            $response,
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="' . $name . '"'
+            ]
         );
     }
 

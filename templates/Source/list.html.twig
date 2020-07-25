@@ -18,6 +18,7 @@
                             <small>{{ file.modified }}</small>
                         </td>
                         <td style="text-align: right; vertical-align: middle; ">
+                            <a href="{{ url('source_export_csv', {name: file.name}) }}" class="btn btn-primary">Export CSV</a>
                             <a href="{{ url('source_delete', {name: file.name}) }}" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
                         </td>
                     </tr>
