@@ -107,7 +107,7 @@ class XMLFileService
         foreach ($users as $user) {
             if ($user['recordName'] !== '') {
                 $tmp = $xml->addChild($recordName);
-                $tmp->addChild($recordPropertyName, $user['recordName']);
+                $tmp->addChild($recordPropertyName, htmlspecialchars($user['recordName']));
 
                 foreach ($user['phoneNumbers'] as $phone) {
                     if ($phone['phoneNumber'] !== '') {
