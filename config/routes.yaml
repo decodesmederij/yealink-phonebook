@@ -22,6 +22,12 @@ source_upload:
   path: /source/upload
   controller: App\Controller\SourceController::uploadAction
 
+source_delete:
+  path: /source/{name}/delete
+  controller: App\Controller\SourceController::deleteAction
+  requirements:
+    name: '[A-Za-z.0-9-_ ]+'
+
 contact:
   path: /contact/{name}
   controller: App\Controller\ContactController::indexAction

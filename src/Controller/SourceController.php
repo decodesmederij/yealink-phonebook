@@ -85,12 +85,25 @@ class SourceController extends AbstractController
             }
         }
 
-
         return $this->render(
             'Source/new.html.twig',
             array(
                 'newFileForm' => $newFileForm->createView(),
             )
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param String $name
+     * @return string|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws
+     */
+    public function deleteAction(Request $request, $name) {
+        unlink('pb/' . $name);
+
+        return $this->redirect(
+            $this->generateUrl('source')
         );
     }
 
