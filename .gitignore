@@ -20,3 +20,5 @@ public/pb
 src/Controller/.gitignore
 templates/base.html.twig
 TODO.md
+
+public/.htaccess
