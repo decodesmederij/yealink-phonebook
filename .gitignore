@@ -10,7 +10,6 @@
 ###< symfony/framework-bundle ###
 
 .idea
-bin
 config/
 !config/routes.yaml
 public/index.php
